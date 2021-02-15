@@ -13,7 +13,7 @@ struct Cell
 };
 
 int Cell_check_surroundings_vector(Cell cell, std::vector<Cell> cells_vec, int current_cell_index);
-int Cell_check_surroundings_array(Cell c_array[60][60], std::tuple<int, int> current_cell_index);
+unsigned int Cell_check_surroundings_array(Cell c_array[60][60], std::tuple<int, int> current_cell_index);
 
 const int MAX_CELLS_ON_SCREEN = 30;
 

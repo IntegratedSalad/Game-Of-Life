@@ -10,7 +10,10 @@ const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 600;
 
 int generation = 0;
+Uint32 TICK_INTERVAL_MS = 500;
 
+Uint32 tick(Uint32 interval, void* param);
+void apply_rules(Cell cells_array[60][60]);
 int main(int argc, char* argv[])
 {
     srand(time(NULL));
@@ -20,7 +23,7 @@ int main(int argc, char* argv[])
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        std::cout << "SDL could not initialize" << std::endl;
+        std::cout << "SDL could not be initialized" << std::endl;
 
     } else
     {
@@ -48,20 +51,49 @@ int main(int argc, char* argv[])
     fill_array_cells(cells_arr, 60);
     //exit(0);
 
-    place_cells_array(cells_arr, MAX_CELLS_ON_SCREEN, 60, CHANCE_OF_SPAWN);
+    //place_cells_array(cells_arr, MAX_CELLS_ON_SCREEN, 60, CHANCE_OF_SPAWN);
+
+    /* BLOCK */
+
+    //cells_arr[25][25].is_alive = true;
+    //cells_arr[25][26].is_alive = true;
+    //cells_arr[26][25].is_alive = true;
+    //cells_arr[26][26].is_alive = true;
+
+    /*       */
+
+    /* Blinker */
+
+    cells_arr[31][30].is_alive = true;
+    cells_arr[32][30].is_alive = true;
+    cells_arr[33][30].is_alive = true;
+
+    cells_arr[36][31].is_alive = true;
+    cells_arr[36][32].is_alive = true;
+    cells_arr[36][33].is_alive = true;
+
+    /*         */
 
     //std::cout << cells_arr[2][2].is_alive << std::endl;
     //exit(0);
+
+    SDL_TimerID timer;
+    timer = SDL_AddTimer(TICK_INTERVAL_MS, tick, NULL);
 
     SDL_Event e;
     bool quit = false;
     while (!quit)
     {
-        if (SDL_PollEvent(&e))
+        if (SDL_WaitEvent(&e))
         {
             if (e.type == SDL_QUIT)
             {
                 break;
+            }
+
+            if (e.type == SDL_USEREVENT)
+            {
+                apply_rules(cells_arr);
             }
         }
 
@@ -93,12 +125,13 @@ int main(int argc, char* argv[])
 
         }
 
+        //apply_rules(cells_arr);
         SDL_Rect rect;
         for (int i = 0; i < 60; i++)
         {
             for (int j = 0; j < 60; j++)
             {
-                Cell current_cell = cells_arr[i][j];
+                Cell current_cell = cells_arr[j][i];
 
                 if (current_cell.will_die)
                 {
@@ -114,34 +147,38 @@ int main(int argc, char* argv[])
 
                 if (current_cell.is_alive)
                 {
-
-                    rect.x = i * 10;
-                    rect.y = j * 10;
+                    rect.x = j * 10;
+                    rect.y = i * 10;
                     rect.h = 10;
                     rect.w = 10;
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                     SDL_RenderFillRect(renderer, &rect);
+
+                    std::cout << j << " " << i << std::endl;
+
+                    //std::cout << rect.x << " " << rect.y << std::endl;
                 }
             }
         }
 
-        for (int i = 0; i < 60; i++)
-        {
-            for (int j = 0; j < 60; j++)
-            {
-                std::tuple<int, int> index(i, j);
-                int neighbours = Cell_check_surroundings_array(cells_arr, index);
 
-                if (neighbours < 2)
-                    cells_arr[i][j].will_die = true;
+        //for (int i = 0; i < 60; i++)
+        //{
+        //    for (int j = 0; j < 60; j++)
+        //    {
+        //        std::tuple<int, int> index(i, j);
+        //        int neighbours = Cell_check_surroundings_array(cells_arr, index);
 
-                if (neighbours > 3)
-                    cells_arr[i][j].will_die = true;
+        //        if (neighbours < 2)
+        //            cells_arr[i][j].will_die = true;
 
-                if (neighbours == 3)
-                    cells_arr[i][j].will_revive = true;
-            }
-        }
+        //        if (neighbours > 3)
+        //            cells_arr[i][j].will_die = true;
+
+        //        if (neighbours == 3)
+        //            cells_arr[i][j].will_revive = true;
+        //    }
+       // }
 
 
         //for (std::size_t i = 0; i < cells_vec.size(); ++i)
@@ -173,11 +210,61 @@ int main(int argc, char* argv[])
         //SDL_RenderPresent(renderer);
     //}
 
-    SDL_RenderPresent(renderer);
+        SDL_RenderPresent(renderer);
     }
+
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
+    SDL_RemoveTimer(timer);
     SDL_Quit();
 
     return 0;
+}
+
+Uint32 tick(Uint32 interval, void* param)
+{
+    SDL_Event event;
+
+    event.type = SDL_USEREVENT;
+    event.user.code = 0;
+    event.user.data1 = NULL;
+    event.user.data2 = NULL;
+
+    SDL_PushEvent(&event);
+
+    return interval;
+}
+
+void apply_rules(Cell cells_array[60][60])
+{
+    for (int i = 0; i < 60; i++)
+    {
+        for (int j = 0; j < 60; j++)
+        {
+            std::tuple<int, int> index(j, i);
+            unsigned int neighbours = Cell_check_surroundings_array(cells_array, index);
+            //if (cells_array[i][j].is_alive)
+            //    std::cout << neighbours << std::endl;
+
+            //std::cout << i << j << ": " << neighbours << std::endl;
+            //exit(0);
+
+            if (cells_array[j][i].is_alive)
+            {
+                if (neighbours < 2)
+                {
+                    cells_array[j][i].will_die = true;
+                }
+
+                if (neighbours > 3)
+                    cells_array[j][i].will_die = true;
+
+            } else
+            {
+                if (neighbours == 3)
+                    cells_array[j][i].will_revive = true;
+            }
+
+        }
+    }
 }

@@ -20,9 +20,9 @@ int Cell_check_surroundings_vector(Cell cell, std::vector<Cell> cells_vec, int c
     return neighbours;
 }
 
-int Cell_check_surroundings_array(Cell c_array[60][60], std::tuple<int, int> current_cell_index)
+unsigned int Cell_check_surroundings_array(Cell c_array[60][60], std::tuple<int, int> current_cell_index)
 {
-    unsigned int neighbours;
+    unsigned int neighbours = 0;
     int x, y;
 
     std::tie(x, y) = current_cell_index;
@@ -84,6 +84,5 @@ int Cell_check_surroundings_array(Cell c_array[60][60], std::tuple<int, int> cur
     //    neighbours++;
     //if (c_array[x-1][y+1].is_alive && (x > 0 && y > 0))
     //    neighbours++;
-
     return neighbours;
 }
