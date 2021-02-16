@@ -49,7 +49,6 @@ int main(int argc, char* argv[])
 
     Cell cells_arr[60][60];
     fill_array_cells(cells_arr, 60);
-    //exit(0);
 
     //place_cells_array(cells_arr, MAX_CELLS_ON_SCREEN, 60, CHANCE_OF_SPAWN);
 
@@ -154,61 +153,12 @@ int main(int argc, char* argv[])
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                     SDL_RenderFillRect(renderer, &rect);
 
-                    std::cout << j << " " << i << std::endl;
+                    //std::cout << j << " " << i << std::endl;
 
                     //std::cout << rect.x << " " << rect.y << std::endl;
                 }
             }
         }
-
-
-        //for (int i = 0; i < 60; i++)
-        //{
-        //    for (int j = 0; j < 60; j++)
-        //    {
-        //        std::tuple<int, int> index(i, j);
-        //        int neighbours = Cell_check_surroundings_array(cells_arr, index);
-
-        //        if (neighbours < 2)
-        //            cells_arr[i][j].will_die = true;
-
-        //        if (neighbours > 3)
-        //            cells_arr[i][j].will_die = true;
-
-        //        if (neighbours == 3)
-        //            cells_arr[i][j].will_revive = true;
-        //    }
-       // }
-
-
-        //for (std::size_t i = 0; i < cells_vec.size(); ++i)
-        //{
-        //    int neighbours;
-        //    neighbours = Cell_check_surroundings(cells_vec[i], cells_vec, i);
-
-        //}
-
-        //for (std::size_t i = 0; i < cells_vec.size(); ++i)
-        //{
-        //    Cell current_cell = cells_vec[i];
-        //    if (current_cell.is_alive)
-        //    {
-        //        SDL_Rect rect;
-
-        //        rect.x = current_cell.x;
-        //        rect.y = current_cell.y;
-        //        rect.h = 10;
-        //        rect.w = 10;
-
-        //        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
-        //        SDL_RenderFillRect(renderer, &rect);
-        //    }
-
-        //}
-
-        //SDL_RenderPresent(renderer);
-    //}
 
         SDL_RenderPresent(renderer);
     }
