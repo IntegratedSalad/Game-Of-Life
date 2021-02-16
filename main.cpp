@@ -10,7 +10,7 @@ const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 600;
 
 int generation = 0;
-Uint32 TICK_INTERVAL_MS = 500;
+Uint32 TICK_INTERVAL_MS = 50;
 
 Uint32 tick(Uint32 interval, void* param);
 void apply_rules(Cell cells_array[60][60]);
@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
     Cell cells_arr[60][60];
     fill_array_cells(cells_arr, 60);
 
-    //place_cells_array(cells_arr, MAX_CELLS_ON_SCREEN, 60, CHANCE_OF_SPAWN);
+    place_cells_array(cells_arr, MAX_CELLS_ON_SCREEN, 60, CHANCE_OF_SPAWN);
 
     /* BLOCK */
 
@@ -63,13 +63,13 @@ int main(int argc, char* argv[])
 
     /* Blinker */
 
-    cells_arr[31][30].is_alive = true;
-    cells_arr[32][30].is_alive = true;
-    cells_arr[33][30].is_alive = true;
+    //cells_arr[31][30].is_alive = true;
+    //cells_arr[32][30].is_alive = true;
+    //cells_arr[33][30].is_alive = true;
 
-    cells_arr[36][31].is_alive = true;
-    cells_arr[36][32].is_alive = true;
-    cells_arr[36][33].is_alive = true;
+    //cells_arr[36][31].is_alive = true;
+    //cells_arr[36][32].is_alive = true;
+    //cells_arr[36][33].is_alive = true;
 
     /*         */
 
@@ -130,21 +130,21 @@ int main(int argc, char* argv[])
         {
             for (int j = 0; j < 60; j++)
             {
-                Cell current_cell = cells_arr[j][i];
+                Cell* current_cell = &cells_arr[j][i];
 
-                if (current_cell.will_die)
+                if (current_cell->will_die)
                 {
-                    current_cell.is_alive = false;
-                    current_cell.will_die = false;
+                    current_cell->is_alive = false;
+                    current_cell->will_die = false;
                 }
 
-                if (current_cell.will_revive)
+                if (current_cell->will_revive)
                 {
-                    current_cell.is_alive = true;
-                    current_cell.will_revive = false;
+                    current_cell->is_alive = true;
+                    current_cell->will_revive = false;
                 }
 
-                if (current_cell.is_alive)
+                if (current_cell->is_alive)
                 {
                     rect.x = j * 10;
                     rect.y = i * 10;
@@ -153,10 +153,8 @@ int main(int argc, char* argv[])
                     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                     SDL_RenderFillRect(renderer, &rect);
 
-                    //std::cout << j << " " << i << std::endl;
-
-                    //std::cout << rect.x << " " << rect.y << std::endl;
                 }
+
             }
         }
 
