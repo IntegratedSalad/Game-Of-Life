@@ -83,16 +83,17 @@ int main(int argc, char* argv[])
     bool quit = false;
     while (!quit)
     {
-        if (SDL_WaitEvent(&e))
+        if (SDL_PollEvent(&e))
         {
             if (e.type == SDL_QUIT)
             {
                 break;
-            }
+            } else {
 
-            if (e.type == SDL_USEREVENT)
-            {
-                apply_rules(cells_arr);
+                if (e.type == SDL_USEREVENT)
+                {
+                    apply_rules(cells_arr);
+                }
             }
         }
 
