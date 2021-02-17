@@ -5,15 +5,13 @@
 
 #include "cell.h"
 #include "game.h"
-
-const int SCREEN_WIDTH = 600;
-const int SCREEN_HEIGHT = 600;
+#include "constants.h"
 
 int generation = 0;
 Uint32 TICK_INTERVAL_MS = 50;
 
 Uint32 tick(Uint32 interval, void* param);
-void apply_rules(Cell cells_array[60][60]);
+void apply_rules(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE]);
 int main(int argc, char* argv[])
 {
     srand(time(NULL));
@@ -39,42 +37,16 @@ int main(int argc, char* argv[])
 
             SDL_UpdateWindowSurface(window);
 
-            // SDL_Delay(2000);
         }
     }
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     SDL_RenderClear(renderer);
-    //std::vector<Cell> cells_vec;
 
-    Cell cells_arr[60][60];
-    fill_array_cells(cells_arr, 60);
+    Cell cells_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE];
+    fill_array_cells(cells_arr, BOARD_SIZE_SQUARE);
 
     place_cells_array(cells_arr, MAX_CELLS_ON_SCREEN, 60, CHANCE_OF_SPAWN);
-
-    /* BLOCK */
-
-    //cells_arr[25][25].is_alive = true;
-    //cells_arr[25][26].is_alive = true;
-    //cells_arr[26][25].is_alive = true;
-    //cells_arr[26][26].is_alive = true;
-
-    /*       */
-
-    /* Blinker */
-
-    //cells_arr[31][30].is_alive = true;
-    //cells_arr[32][30].is_alive = true;
-    //cells_arr[33][30].is_alive = true;
-
-    //cells_arr[36][31].is_alive = true;
-    //cells_arr[36][32].is_alive = true;
-    //cells_arr[36][33].is_alive = true;
-
-    /*         */
-
-    //std::cout << cells_arr[2][2].is_alive << std::endl;
-    //exit(0);
 
     SDL_TimerID timer;
     timer = SDL_AddTimer(TICK_INTERVAL_MS, tick, NULL);
@@ -111,7 +83,7 @@ int main(int argc, char* argv[])
         int x2h_grid = 600; // end
         int y2h_grid = 600;
 
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < BOARD_SIZE_SQUARE; i++)
         {
             SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
 
@@ -125,11 +97,10 @@ int main(int argc, char* argv[])
 
         }
 
-        //apply_rules(cells_arr);
         SDL_Rect rect;
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < BOARD_SIZE_SQUARE; i++)
         {
-            for (int j = 0; j < 60; j++)
+            for (int j = 0; j < BOARD_SIZE_SQUARE; j++)
             {
                 Cell* current_cell = &cells_arr[j][i];
 
@@ -184,19 +155,14 @@ Uint32 tick(Uint32 interval, void* param)
     return interval;
 }
 
-void apply_rules(Cell cells_array[60][60])
+void apply_rules(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE])
 {
-    for (int i = 0; i < 60; i++)
+    for (int i = 0; i < BOARD_SIZE_SQUARE; i++)
     {
-        for (int j = 0; j < 60; j++)
+        for (int j = 0; j < BOARD_SIZE_SQUARE; j++)
         {
             std::tuple<int, int> index(j, i);
             unsigned int neighbours = Cell_check_surroundings_array(cells_array, index);
-            //if (cells_array[i][j].is_alive)
-            //    std::cout << neighbours << std::endl;
-
-            //std::cout << i << j << ": " << neighbours << std::endl;
-            //exit(0);
 
             if (cells_array[j][i].is_alive)
             {
