@@ -8,7 +8,7 @@ int Cell_check_surroundings_vector(Cell cell, std::vector<Cell> cells_vec, int c
     {
         if (i != current_cell_index)
         {
-            Cell cell_to_check = cells_vec[i];
+            //Cell cell_to_check = cells_vec[i];
             //    cell.x - 10 == cell_to_check            //if ((cell.x + 10 == cell_to_check.x) && cell.y ||
         }
     }
@@ -65,4 +65,17 @@ unsigned int Cell_check_surroundings_array(Cell c_array[BOARD_SIZE_SQUARE][BOARD
     }
 
     return neighbours;
+}
+
+void reset_cell_array(Cell cells_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE])
+{
+
+    for (int i = 0; i < BOARD_SIZE_SQUARE; i++)
+    {
+        for (int j = 0; j < BOARD_SIZE_SQUARE; j++)
+        {
+            Cell* new_cell = &cells_arr[i][j];
+        }
+    }
+
 }
