@@ -8,7 +8,7 @@ int rand_range(int min_num, int max_num)
     //return (rand() / (RAND_MAX + 1) * (max_num - min_num) + min_num);
 }
 
-void fill_array_cells(Cell c_arr[60][60], const int n_cells)
+void fill_array_cells(Cell c_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], const int n_cells)
 {
     for (int i = 0; i < n_cells; i++)
     {
@@ -20,7 +20,7 @@ void fill_array_cells(Cell c_arr[60][60], const int n_cells)
     }
 }
 
-void place_cells_array(Cell c_arr[60][60], const int max_cells, const int n_cells, int chance)
+void place_cells_array(Cell c_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], const int max_cells, const int n_cells, int chance)
 {
     /* Placing is just setting the is_alive member to true. */
 
@@ -45,7 +45,6 @@ void place_cells_array(Cell c_arr[60][60], const int max_cells, const int n_cell
 
 void place_cells_vector(std::vector<Cell>& vec, const int max_cells, int chance)
 {
-    //TODO: add a chance to add a few cells in the surroundings of a new cell.
 
     for (int i = 0; i <= max_cells; i++)
     {

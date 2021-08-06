@@ -2,6 +2,7 @@
 #define CELL_H_INCLUDED
 #include <vector>
 #include <tuple>
+#include "constants.h"
 
 struct Cell
 {
@@ -12,9 +13,10 @@ struct Cell
     bool will_revive = false;
 };
 
-int Cell_check_surroundings_vector(Cell cell, std::vector<Cell> cells_vec, int current_cell_index);
-unsigned int Cell_check_surroundings_array(Cell c_array[60][60], std::tuple<int, int> current_cell_index);
 
-const int MAX_CELLS_ON_SCREEN = 30;
+int Cell_check_surroundings_vector(Cell cell, std::vector<Cell> cells_vec, int current_cell_index);
+unsigned int Cell_check_surroundings_array(Cell c_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], std::tuple<int, int> current_cell_index);
+void reset_cell_array(Cell cells_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE]);
+
 
 #endif // CELL_H_INCLUDED
