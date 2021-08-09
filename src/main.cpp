@@ -1,4 +1,9 @@
+#ifdef _WIN32
 #include <SDL.h>
+#elif __unix__ || __APPLE__
+#include <SDL2/SDL.h>
+#endif
+
 #include <iostream>
 #include <vector>
 #include <time.h>
@@ -19,9 +24,16 @@ int main(int argc, char* argv[])
     /* INIT */
     srand(time(NULL));
 
+    if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
+    {
+        std::cout << "Linear texture filtering not enabled!" << std::endl;
+    }
+    
     SDL_Window* window = NULL;
-    SDL_Surface* screen_surface = NULL;
-
+    
+    
+//    SDL_Surface* screen_surface = NULL;
+    
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         std::cout << "SDL could not be initialized" << std::endl;
@@ -34,11 +46,20 @@ int main(int argc, char* argv[])
             std::cout << "Window could not be created." << std::endl;
         } else
         {
-            screen_surface = SDL_GetWindowSurface(window);
-
-            SDL_FillRect(screen_surface, NULL, SDL_MapRGB(screen_surface->format, 0xFF, 0xFF, 0xFF));
-
-            SDL_UpdateWindowSurface(window);
+            
+            /*
+//            screen_surface = SDL_GetWindowSurface(window);
+//
+//            SDL_FillRect(screen_surface, NULL, SDL_MapRGB(screen_surface->format, 0xFF, 0xFF, 0xFF));
+//
+//            SDL_UpdateWindowSurface(window);
+             
+             
+             
+             This initialises the window to be used in blit mode.
+             */
+            
+            
 
         }
     }
@@ -60,6 +81,7 @@ int main(int argc, char* argv[])
     bool pause = false;
     while (!quit)
     {
+        
         if (SDL_PollEvent(&e))
         {
             if (e.type == SDL_QUIT)
