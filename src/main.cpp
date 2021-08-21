@@ -1,4 +1,10 @@
+#if __win32
 #include <SDL.h>
+#elif __unix__ || __APPLE__
+//#include <SDL2/SDL.h>
+#include <SDL.h> // on m1 uncomment this
+#endif
+
 #include <iostream>
 #include <vector>
 #include <time.h>
@@ -10,7 +16,7 @@
 int generation = 0;
 Uint32 tick_interval_ms = 50;
 
-Uint32 tick(Uint32 interval, void* param);
+//Uint32 tick(Uint32 interval, void* param);
 void apply_rules(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE]);
 void render_all(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], SDL_Renderer* renderer);
 int main(int argc, char* argv[])
@@ -20,7 +26,7 @@ int main(int argc, char* argv[])
     srand(time(NULL));
 
     SDL_Window* window = NULL;
-    SDL_Surface* screen_surface = NULL;
+//    SDL_Surface* screen_surface = NULL;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -34,11 +40,19 @@ int main(int argc, char* argv[])
             std::cout << "Window could not be created." << std::endl;
         } else
         {
+            
+            /*
             screen_surface = SDL_GetWindowSurface(window);
 
             SDL_FillRect(screen_surface, NULL, SDL_MapRGB(screen_surface->format, 0xFF, 0xFF, 0xFF));
 
             SDL_UpdateWindowSurface(window);
+             
+             
+             This initialises the window to be used in blit mode.
+             */
+            
+            
 
         }
     }
@@ -52,7 +66,7 @@ int main(int argc, char* argv[])
     place_cells_array(cells_arr, MAX_CELLS_ON_SCREEN, 60, CHANCE_OF_SPAWN);
 
     SDL_TimerID timer;
-    timer = SDL_AddTimer(tick_interval_ms, tick, NULL);
+//    timer = SDL_AddTimer(tick_interval_ms, tick, NULL);
 
     SDL_Event e;
     /* Main Loop */
@@ -103,19 +117,19 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-Uint32 tick(Uint32 interval, void* param)
-{
-    SDL_Event event;
-
-    event.type = SDL_USEREVENT;
-    event.user.code = 0;
-    event.user.data1 = NULL;
-    event.user.data2 = NULL;
-
-    SDL_PushEvent(&event);
-
-    return interval;
-}
+//Uint32 tick(Uint32 interval, void* param)
+//{
+//    SDL_Event event;
+//
+//    event.type = SDL_USEREVENT;
+//    event.user.code = 0;
+//    event.user.data1 = NULL;
+//    event.user.data2 = NULL;
+//
+//    SDL_PushEvent(&event);
+//
+//    return interval;
+//}
 
 void apply_rules(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE])
 {

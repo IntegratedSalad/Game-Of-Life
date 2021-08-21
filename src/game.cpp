@@ -1,13 +1,16 @@
 #include "game.h"
-#include "cell.h"
+//#include "cell.h"
 
 
+/* This is an utility */
 int rand_range(int min_num, int max_num)
 {
     return rand() % (max_num - min_num + 1) + min_num;
     //return (rand() / (RAND_MAX + 1) * (max_num - min_num) + min_num);
 }
 
+
+/* This function belongs to cell.h */
 void fill_array_cells(Cell c_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], const int n_cells)
 {
     for (int i = 0; i < n_cells; i++)
@@ -20,6 +23,7 @@ void fill_array_cells(Cell c_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], const in
     }
 }
 
+/* This function belongs to cell.h */
 void place_cells_array(Cell c_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], const int max_cells, const int n_cells, int chance)
 {
     /* Placing is just setting the is_alive member to true. */
@@ -43,6 +47,7 @@ void place_cells_array(Cell c_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], const i
 
 }
 
+/* This function belongs to cell.h */
 void place_cells_vector(std::vector<Cell>& vec, const int max_cells, int chance)
 {
 
@@ -64,4 +69,18 @@ void place_cells_vector(std::vector<Cell>& vec, const int max_cells, int chance)
         }
 
     }
+}
+
+Uint32 tick_function(Uint32 interval, void* param)
+{
+    SDL_Event event;
+
+    event.type = SDL_USEREVENT;
+    event.user.code = 0;
+    event.user.data1 = NULL;
+    event.user.data2 = NULL;
+
+    SDL_PushEvent(&event);
+
+    return interval;
 }
