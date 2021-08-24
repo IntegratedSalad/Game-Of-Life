@@ -5,6 +5,8 @@
 //  Created by Dev on 10/08/2021.
 //
 
+#pragma once
+
 #ifndef app_hpp
 #define app_hpp
 
@@ -18,6 +20,7 @@
 #endif
 
 #include <iostream>
+#include "engine.hpp"
 
 class App
 {
@@ -26,7 +29,7 @@ private:
     SDL_Window* window;
     
 public:
-    App(int height, int width);
+    App(const int SCREEN_HEIGHT, const int SCREEN_WIDTH);
     ~App();
     
     void run();

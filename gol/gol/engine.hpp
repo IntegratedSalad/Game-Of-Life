@@ -19,19 +19,26 @@
 
 #include <iostream>
 #include <vector>
+#include "cell.h"
+#include "constants.h"
 
 class Engine
 {
 private:
     bool running;
-    SDL_TimerID timer_tick;
-    Uint32 tick_interval_ms;
+    SDL_TimerID timerTick;
+    Uint32 tickIntervalms;
     
 public:
     Engine();
     ~Engine();
     
-    void main_loop();
+    void mainLoop(Cell cellsArray[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE]);
+    std::string handleEvents(SDL_Event* event, bool paused);
+    void initCellsArray(Cell arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], const int MAX_CELLS, const int N_START_CELLS, int chance);
+    
+    void render_all(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], SDL_Renderer* renderer);
+    
     
 };
 

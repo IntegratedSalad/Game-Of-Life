@@ -21,55 +21,57 @@ void apply_rules(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE]);
 void render_all(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], SDL_Renderer* renderer);
 int main(int argc, char* argv[])
 {
-
-    /* INIT */
-    srand(time(NULL));
-
-    SDL_Window* window = NULL;
-//    SDL_Surface* screen_surface = NULL;
-
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        std::cout << "SDL could not be initialized" << std::endl;
-
-    } else
-    {
-        window = SDL_CreateWindow("Game Of Life", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        if (window == NULL)
-        {
-            std::cout << "Window could not be created." << std::endl;
-        } else
-        {
-            
-            /*
-            screen_surface = SDL_GetWindowSurface(window);
-
-            SDL_FillRect(screen_surface, NULL, SDL_MapRGB(screen_surface->format, 0xFF, 0xFF, 0xFF));
-
-            SDL_UpdateWindowSurface(window);
-             
-             
-             This initialises the window to be used in blit mode.
-             */
-            
-            
-
-        }
-    }
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-    SDL_RenderClear(renderer);
-
-    Cell cells_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE];
-    fill_array_cells(cells_arr, BOARD_SIZE_SQUARE);
-
-    place_cells_array(cells_arr, MAX_CELLS_ON_SCREEN, 60, CHANCE_OF_SPAWN);
-
-    SDL_TimerID timer;
+//
+//    /* INIT */
+//    srand(time(NULL));
+//
+//    SDL_Window* window = NULL;
+////    SDL_Surface* screen_surface = NULL;
+//
+//    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+//    {
+//        std::cout << "SDL could not be initialized" << std::endl;
+//
+//    } else
+//    {
+//        window = SDL_CreateWindow("Game Of Life", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+//        if (window == NULL)
+//        {
+//            std::cout << "Window could not be created." << std::endl;
+//        } else
+//        {
+//
+//            /*
+//            screen_surface = SDL_GetWindowSurface(window);
+//
+//            SDL_FillRect(screen_surface, NULL, SDL_MapRGB(screen_surface->format, 0xFF, 0xFF, 0xFF));
+//
+//            SDL_UpdateWindowSurface(window);
+//
+//
+//             This initialises the window to be used in blit mode.
+//             */
+//
+//
+//
+//        }
+//    }
+//    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+//
+//    SDL_RenderClear(renderer);
+//
+//    Cell cells_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE];
+//    fill_array_cells(cells_arr, BOARD_SIZE_SQUARE);
+//
+//    place_cells_array(cells_arr, MAX_CELLS_ON_SCREEN, 60, CHANCE_OF_SPAWN);
+//
+//    SDL_TimerID timer;
 //    timer = SDL_AddTimer(tick_interval_ms, tick, NULL);
-
-    SDL_Event e;
-    /* Main Loop */
+//
+//    SDL_Event e;
+//    /* Main Loop */
+    
+    
     bool quit = false;
     bool pause = false;
     while (!quit)
@@ -131,6 +133,8 @@ int main(int argc, char* argv[])
 //    return interval;
 //}
 
+
+/* Belongs to cell.h */
 void apply_rules(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE])
 {
     for (int i = 0; i < BOARD_SIZE_SQUARE; i++)
@@ -159,6 +163,7 @@ void apply_rules(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE])
         }
     }
 }
+
 void render_all(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], SDL_Renderer* renderer)
 {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

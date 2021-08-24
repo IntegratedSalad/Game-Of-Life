@@ -71,7 +71,7 @@ void place_cells_vector(std::vector<Cell>& vec, const int max_cells, int chance)
     }
 }
 
-Uint32 tick_function(Uint32 interval, void* param)
+Uint32 tickFunction(Uint32 interval, void* param)
 {
     SDL_Event event;
 
