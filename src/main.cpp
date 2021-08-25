@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
     
     App app = App(SCREEN_WIDTH, SCREEN_HEIGHT);
     app.run();
-    
+    std::cout << "Ended" << std::endl;
     
     
 //

@@ -33,6 +33,7 @@ public:
     ~App();
     
     void run();
+    void quit();
 };
 
 

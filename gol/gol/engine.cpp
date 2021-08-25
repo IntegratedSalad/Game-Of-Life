@@ -12,6 +12,8 @@
 Engine::Engine(SDL_Renderer* r)
 {
     renderer = NULL;
+    tickIntervalms = TICK_INTERVAL_MS;
+    
     timerTick = SDL_AddTimer(tickIntervalms, tickFunction, NULL);
     Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE];
     
@@ -38,26 +40,30 @@ void Engine::mainLoop(Cell cellsArray[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE])
             {
                 fill_array_cells(cellsArray, BOARD_SIZE_SQUARE);
                 place_cells_array(cellsArray, MAX_CELLS_ON_SCREEN, 60, CHANCE_OF_SPAWN);
+                break;
             }
                 
             case E_APPLY_RULES:
             {
                 apply_rules(cellsArray);
+                break;
             }
             case E_PAUSE:
             {
-                
+                paused = !paused;
+                break;
             }
+                
             case E_QUIT:
             {
                 SDL_RemoveTimer(timerTick);
+                running = false;
                 break;
             }
                 
         }
         
         renderAll(cellsArray, renderer);
-        
     }
 }
 

@@ -14,6 +14,7 @@ const int CHANCE_OF_SPAWN = 50;
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 600;
 
+const int TICK_INTERVAL_MS = 50;
 
 
 #endif // CONSTANTS_H_INCLUDED
