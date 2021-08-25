@@ -66,16 +66,3 @@ unsigned int Cell_check_surroundings_array(Cell c_array[BOARD_SIZE_SQUARE][BOARD
 
     return neighbours;
 }
-
-void reset_cell_array(Cell cells_arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE])
-{
-
-    for (int i = 0; i < BOARD_SIZE_SQUARE; i++)
-    {
-        for (int j = 0; j < BOARD_SIZE_SQUARE; j++)
-        {
-            Cell* new_cell = &cells_arr[i][j];
-        }
-    }
-
-}
