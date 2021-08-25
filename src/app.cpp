@@ -33,8 +33,17 @@ App::App(const int SCREEN_HEIGHT, const int SCREEN_WIDTH)
     
 }
 
-// app shares a renderer and window with engine
 void App::run()
 {
+    /* Probably engine has to have a private field "world", where it has access to cell array and other data
+       and then e.mainLoop() */
+    Engine e = Engine(renderer);
     
+}
+// or pass window to the renderer. however, engine shouldn't handle exiting the program.
+App::~App()
+{
+    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(renderer);
+    SDL_Quit();
 }

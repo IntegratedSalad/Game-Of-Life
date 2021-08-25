@@ -19,8 +19,10 @@
 
 #include <iostream>
 #include <vector>
+
 #include "cell.h"
 #include "constants.h"
+#include "game.h"
 
 class Engine
 {
@@ -29,16 +31,30 @@ private:
     SDL_TimerID timerTick;
     Uint32 tickIntervalms;
     
+    SDL_Renderer* renderer;
+    
+    enum Events
+    {
+        E_RESET,
+        E_PAUSE,
+        E_QUIT,
+        E_APPLY_RULES,
+        E_NO_EVENT
+        
+    };
+    
+
+    
 public:
-    Engine();
+    Engine(SDL_Renderer* r);
     ~Engine();
     
     void mainLoop(Cell cellsArray[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE]);
-    std::string handleEvents(SDL_Event* event, bool paused);
+    int handleEvents(SDL_Event* event, bool paused);
     void initCellsArray(Cell arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], const int MAX_CELLS, const int N_START_CELLS, int chance);
     
-    void render_all(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], SDL_Renderer* renderer);
-    
+    void renderAll(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], SDL_Renderer* renderer);
+    void apply_rules(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE]);
     
 };
 

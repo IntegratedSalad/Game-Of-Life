@@ -5,19 +5,19 @@
 //  Created by Dev on 11/08/2021.
 //
 
-#include "engine.hpp"
-#include "game.h"
-#include "constants.h"
-
 /* Instead of using arrays, use vectors */
 
-Engine::Engine()
+#include "engine.hpp"
+
+Engine::Engine(SDL_Renderer* r)
 {
+    renderer = NULL;
     timerTick = SDL_AddTimer(tickIntervalms, tickFunction, NULL);
     Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE];
     
     initCellsArray(cells_array, MAX_CELLS_ON_SCREEN, NUM_CELLS_START, CHANCE_OF_SPAWN);
     
+    renderer = r;
     mainLoop(cells_array);
     
 }
@@ -30,41 +30,69 @@ void Engine::mainLoop(Cell cellsArray[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE])
     
     while (running)
     {
-        std::string event_status = handleEvents(&e, paused);
+        int eventStatus = handleEvents(&e, paused);
+        
+        switch (eventStatus)
+        {
+            case E_RESET:
+            {
+                fill_array_cells(cellsArray, BOARD_SIZE_SQUARE);
+                place_cells_array(cellsArray, MAX_CELLS_ON_SCREEN, 60, CHANCE_OF_SPAWN);
+            }
+                
+            case E_APPLY_RULES:
+            {
+                apply_rules(cellsArray);
+            }
+            case E_PAUSE:
+            {
+                
+            }
+            case E_QUIT:
+            {
+                SDL_RemoveTimer(timerTick);
+                break;
+            }
+                
+        }
+        
+        renderAll(cellsArray, renderer);
+        
     }
 }
 
-std::string Engine::handleEvents(SDL_Event* event, bool paused)
+int Engine::handleEvents(SDL_Event* event, bool paused)
 {
     
     if (SDL_PollEvent(event))
     {
         if (event->type == SDL_QUIT)
         {
-            return "quit";
+            return E_QUIT;
+            
         } else if (event->type == SDL_KEYDOWN)
         {
             switch (event->key.keysym.sym)
             {
                 case SDLK_r:
-                    return "reset";
+                    return E_RESET;
                     break;
 
                 case SDLK_SPACE:
-                    return "pause";
+                    return E_PAUSE;
                     break;
             }
         } else
         {
             if (event->type == SDL_USEREVENT && !paused)
             {
-                return "apply_rules";
+                return E_APPLY_RULES;
             }
         }
         
     }
     
-    return "no_event";
+    return E_NO_EVENT;
 }
 
 void Engine::initCellsArray(Cell arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], const int MAX_CELLS, const int N_START_CELLS, int chance)
@@ -76,7 +104,7 @@ void Engine::initCellsArray(Cell arr[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], cons
     
 }
 
-void Engine::render_all(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], SDL_Renderer* renderer)
+void Engine::renderAll(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], SDL_Renderer* renderer)
 {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer);
@@ -138,4 +166,38 @@ void Engine::render_all(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE], 
     }
 
     SDL_RenderPresent(renderer);
+}
+
+void Engine::apply_rules(Cell cells_array[BOARD_SIZE_SQUARE][BOARD_SIZE_SQUARE])
+{
+    for (int i = 0; i < BOARD_SIZE_SQUARE; i++)
+    {
+        for (int j = 0; j < BOARD_SIZE_SQUARE; j++)
+        {
+            std::tuple<int, int> index(j, i);
+            unsigned int neighbours = Cell_check_surroundings_array(cells_array, index);
+
+            if (cells_array[j][i].is_alive)
+            {
+                if (neighbours < 2)
+                {
+                    cells_array[j][i].will_die = true;
+                }
+
+                if (neighbours > 3)
+                    cells_array[j][i].will_die = true;
+
+            } else
+            {
+                if (neighbours == 3)
+                    cells_array[j][i].will_revive = true;
+            }
+
+        }
+    }
+}
+
+Engine::~Engine()
+{
+    
 }
